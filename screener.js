@@ -108,8 +108,12 @@
             renderTable();
             renderPagination();
 
-            // Important: Programmatically click the reset filters button
+        // Add a small delay before triggering the reset
+        setTimeout(() => {
+            // Programmatically click the reset filters button
             document.getElementById('reset-filters').click();
+            console.log('Reset filters triggered after data load');
+        }, 500); // 500ms delay
 
         } catch (error) {
             console.error('Error loading stock data:', error);

@@ -8,15 +8,10 @@
     // Fetch data from Google Sheets published as CSV
     async function fetchGoogleSheetsData() {
         try {
-            // Properly formatted CSV URL
-            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe/pub?output=csv&gid=0';
-            
-            console.log('Fetching from URL:', csvUrl);
-            const response = await fetch(csvUrl);
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe/pub?output=csv&gid=0');
             
             if (!response.ok) {
                 console.error('Response status:', response.status);
-                console.error('Response text:', await response.text());
                 throw new Error(`Failed to fetch data from Google Sheets: ${response.status}`);
             }
             

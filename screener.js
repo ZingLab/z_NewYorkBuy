@@ -94,8 +94,14 @@
                 ratio: parseFloat(stock.ratio || 1)
             }));
             
-            // Initialize filtered stocks with all stocks
-            filteredStocks = [...allStocks];
+            // Filter out stocks with missing essential data
+            allStocks = allStocks.filter(stock => 
+                stock.ticker && 
+                stock.ticker.trim() !== '' && 
+                stock.price > 0  // Only include stocks with a valid price
+            );
+
+            console.log(`After filtering, ${allStocks.length} stocks remain`);
             
             // Update stats
             updateStats();
@@ -422,29 +428,65 @@
         }
     }
     
-    // Parse CSV data
-    function parseCSV(csvText) {
-        const lines = csvText.split('\n');
-        const headers = lines[0].split(',').map(header => header.trim().toLowerCase().replace(/"/g, ''));
+// Parse CSV data
+function parseCSV(csvText) {
+    const lines = csvText.split('\n');
+    const headers = lines[0].split(',').map(header => header.trim().toLowerCase().replace(/"/g, ''));
+    
+    // Debug info
+    console.log('CSV Headers:', headers);
+    console.log('Total rows in CSV:', lines.length - 1);
+    
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+        // Skip empty lines
+        if (!lines[i].trim()) continue;
         
-        const data = [];
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].split(',');
-            if (line.length === headers.length) {
-                const stock = {};
-                headers.forEach((header, index) => {
-                    let value = line[index].replace(/"/g, '').trim();
-                    
-                    // Convert numeric values
+        const line = lines[i].split(',');
+        
+        // Create stock object even if columns don't match exactly
+        const stock = {};
+        headers.forEach((header, index) => {
+            // Handle case where line has fewer columns than headers
+            if (index < line.length) {
+                let value = line[index].replace(/"/g, '').trim();
+                
+                // Handle empty values 
+                if (value === '') {
+                    // For numeric fields, default to 0; for other fields, default to empty string
                     if (['price', 'pe', 'high52', 'low52', 'marketcap', 'ratio'].includes(header)) {
-                        value = parseFloat(value) || 0;
+                        value = 0;
+                    } else {
+                        value = '';
                     }
-                    
-                    stock[header] = value;
-                });
-                data.push(stock);
+                } else if (['price', 'pe', 'high52', 'low52', 'marketcap', 'ratio'].includes(header)) {
+                    // Convert numeric values, with better error handling
+                    const parsed = parseFloat(value);
+                    value = isNaN(parsed) ? 0 : parsed;
+                }
+                
+                stock[header] = value;
+            } else {
+                // If column is missing, set default value
+                if (['price', 'pe', 'high52', 'low52', 'marketcap', 'ratio'].includes(header)) {
+                    stock[header] = 0;
+                } else {
+                    stock[header] = '';
+                }
             }
+        });
+        
+        // Debug first few rows
+        if (i < 5) {
+            console.log(`Row ${i}:`, stock);
         }
         
-        return data;
+        // Only add stocks that have at least a ticker
+        if (stock.ticker && stock.ticker.trim() !== '') {
+            data.push(stock);
+        }
     }
+    
+    console.log(`Parsed ${data.length} valid stocks from CSV`);
+    return data;
+}

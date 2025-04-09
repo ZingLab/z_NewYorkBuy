@@ -63,23 +63,7 @@
                 
                 // Fall back to sample data if fetch fails
                 allStocks = [
-                    { exchange: 'NYSE', ticker: 'DELL', name: 'DELL TECHNOLOGIES INC CLASS C', price: 72.82, pe: 0, high52: 179.7, low52: 66.25, marketcap: 50816766843, ratio: 1.0992 },
-                    { exchange: 'NYSE', ticker: 'LNC', name: 'LINCOLN NATIONAL CORP', price: 28.88, pe: 1.55, high52: 39.85, low52: 25.8, marketcap: 4929779093, ratio: 1.1194 },
-                    { exchange: 'NYSE', ticker: 'FLR', name: 'FLUOR CORP', price: 31.45, pe: 2.5, high52: 60.1, low52: 29.2, marketcap: 5284210258, ratio: 1.0771 },
-                    { exchange: 'NYSE', ticker: 'CIVI', name: 'CIVITAS RESOURCES INC', price: 25.89, pe: 3, high52: 78.63, low52: 22.79, marketcap: 2407286869, ratio: 1.1360 },
-                    { exchange: 'NYSE', ticker: 'OGN', name: 'ORGANON', price: 11.4, pe: 3.41, high52: 23.1, low52: 11.05, marketcap: 2944500381, ratio: 1.0317 },
-                    { exchange: 'NYSE', ticker: 'AES', name: 'AES CORP', price: 10.3, pe: 4.28, high52: 22.21, low52: 9.88, marketcap: 7304099292, ratio: 1.0425 },
-                    { exchange: 'NYSE', ticker: 'RITM', name: 'RITHM CAPITAL CORP', price: 9.38, pe: 4.95, high52: 12.2, low52: 9.13, marketcap: 5107675000, ratio: 1.0274 },
-                    { exchange: 'NYSE', ticker: 'SYF', name: 'SYNCHRONY FINANCIAL', price: 43.3, pe: 4.97, high52: 70.93, low52: 39.67, marketcap: 16832848723, ratio: 1.0915 },
-                    { exchange: 'NYSE', ticker: 'MTDR', name: 'MATADOR RESOURCES', price: 36.31, pe: 5.02, high52: 71.08, low52: 35.19, marketcap: 4546273603, ratio: 1.0318 },
-                    { exchange: 'NASDAQ', ticker: 'CHRD', name: 'CHORD ENERGY CORP', price: 84.2, pe: 5.17, high52: 190.23, low52: 79.83, marketcap: 4985217767, ratio: 1.0547 },
-                    { exchange: 'NASDAQ', ticker: 'CROX', name: 'CROCS INC', price: 88.88, pe: 5.51, high52: 165.32, low52: 86.11, marketcap: 4976104247, ratio: 1.0322 },
-                    { exchange: 'NYSE', ticker: 'JXN', name: 'JACKSON FINANCIAL INC CLASS A', price: 68.58, pe: 5.71, high52: 115.22, low52: 62.81, marketcap: 4971184278, ratio: 1.0919 },
-                    { exchange: 'NYSE', ticker: 'MTH', name: 'MERITAGE CORP', price: 62.51, pe: 5.81, high52: 106.99, low52: 59.27, marketcap: 4473886216, ratio: 1.0547 },
-                    { exchange: 'NASDAQ', ticker: 'WFRD', name: 'WEATHERFORD INTERNATIONAL PLC', price: 40, pe: 5.75, high52: 135, low52: 36.74, marketcap: 2882894752, ratio: 1.0887 },
-                    { exchange: 'NYSE', ticker: 'DVN', name: 'DEVON ENERGY CORP', price: 26.96, pe: 5.83, high52: 55.09, low52: 25.89, marketcap: 17678759851, ratio: 1.0413 },
-                    { exchange: 'NYSE', ticker: 'PVH', name: 'PVH CORP', price: 62.71, pe: 5.91, high52: 124.68, low52: 59.28, marketcap: 3300862459, ratio: 1.0579 },
-                    { exchange: 'NYSE', ticker: 'F', name: 'FORD MOTOR', price: 8.74, pe: 5.9, high52: 14.85, low52: 8.44, marketcap: 34914081598, ratio: 1.0355 }
+                    { exchange: 'NYSE', ticker: 'XMPL', name: 'EXAMPLE TECHNOLOGIES INC CLASS C', price: 72.82, pe: 0, high52: 179.7, low52: 66.25, marketcap: 50816766843, ratio: 1.0992 }
                 ];
             }
             
@@ -103,6 +87,20 @@
 
             console.log(`After filtering, ${allStocks.length} stocks remain`);
             
+            // Important: Make sure all form elements are reset to default values
+            document.getElementById('exchange').value = 'all';
+            document.getElementById('min-pe').value = '';
+            document.getElementById('max-pe').value = '';
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            document.getElementById('search').value = '';
+            
+            // Initialize filtered stocks with all stocks
+            filteredStocks = [...allStocks];
+            
+            // Reset to first page
+            currentPage = 1;
+
             // Update stats
             updateStats();
             

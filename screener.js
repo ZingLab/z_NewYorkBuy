@@ -8,7 +8,7 @@
     async function fetchGoogleSheetsData() {
         try {
             // Properly formatted CSV URL
-            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv&gid=0`;
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe/pub?output=csv&gid=0';
             
             console.log('Fetching from URL:', csvUrl);
             const response = await fetch(csvUrl);

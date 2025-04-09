@@ -107,6 +107,10 @@
             // Display data
             renderTable();
             renderPagination();
+
+            // Important: Programmatically click the reset filters button
+            document.getElementById('reset-filters').click();
+
         } catch (error) {
             console.error('Error loading stock data:', error);
             alert('Error loading stock data. Please try again later.');

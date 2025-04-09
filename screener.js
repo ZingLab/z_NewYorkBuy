@@ -3,7 +3,8 @@
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe/pub?output=csv'
     const SHEET_ID = '2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe';
     const SHEET_NAME = 'Table1';
-    
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSx8aQ7JKVPFfgTdwwTImfgEzqGh74mUm8EaVts2WUqLbnfKSGZO8HLUpYp5OfzlJC05lqDN-8QyzFe/pub?output=csv&gid=0';
+
     // Fetch data from Google Sheets published as CSV
     async function fetchGoogleSheetsData() {
         try {

@@ -49,79 +49,97 @@
         });
     });
     
-    // Load stock data from Google Sheets
-    async function loadStockData() {
-        showLoading(true);
+
+// Load stock data from Google Sheets
+async function loadStockData() {
+    showLoading(true);
+    
+    try {
+        // Check if we have cached data and it's not too old
+        const cachedData = localStorage.getItem('stockData');
+        const cacheTimestamp = localStorage.getItem('stockDataTimestamp');
+        const cacheAge = cacheTimestamp ? (Date.now() - parseInt(cacheTimestamp)) : Infinity;
         
-        try {
+        // Use cache if it exists and is less than 1 hour old (3600000 ms)
+        if (cachedData && cacheAge < 3600000) {
+            console.log('Using cached stock data from localStorage');
+            allStocks = JSON.parse(cachedData);
+        } else {
             // Try to fetch data from Google Sheets
             try {
                 allStocks = await fetchGoogleSheetsData();
                 console.log('Successfully loaded data from Google Sheets');
+                
+                // Cache the data in localStorage
+                localStorage.setItem('stockData', JSON.stringify(allStocks));
+                localStorage.setItem('stockDataTimestamp', Date.now().toString());
             } catch (fetchError) {
                 console.warn('Failed to fetch from Google Sheets, using backup data:', fetchError);
                 
                 // Fall back to sample data if fetch fails
                 allStocks = [
                     { exchange: 'NYSE', ticker: 'XMPL', name: 'EXAMPLE TECHNOLOGIES INC CLASS C', price: 72.82, pe: 0, high52: 179.7, low52: 66.25, marketcap: 50816766843, ratio: 1.0992 }
+                    // Add your other backup data here
                 ];
+                
+                // Cache even the backup data so we don't have to reload on page changes
+                localStorage.setItem('stockData', JSON.stringify(allStocks));
+                localStorage.setItem('stockDataTimestamp', Date.now().toString());
             }
-            
-            // Format the data
-            allStocks = allStocks.map(stock => ({
-                ...stock,
-                price: parseFloat(stock.price || 0),
-                pe: parseFloat(stock.pe || 0),
-                high52: parseFloat(stock.high52 || 0),
-                low52: parseFloat(stock.low52 || 0),
-                marketcap: parseFloat(stock.marketcap || 0),
-                ratio: parseFloat(stock.ratio || 1)
-            }));
-            
-            // Filter out stocks with missing essential data
-            allStocks = allStocks.filter(stock => 
-                stock.ticker && 
-                stock.ticker.trim() !== '' && 
-                stock.price > 0  // Only include stocks with a valid price
-            );
+        }
+        
+        // Format the data (necessary even when loading from cache to ensure all properties are correct)
+        allStocks = allStocks.map(stock => ({
+            ...stock,
+            price: parseFloat(stock.price || 0),
+            pe: parseFloat(stock.pe || 0),
+            high52: parseFloat(stock.high52 || 0),
+            low52: parseFloat(stock.low52 || 0),
+            marketcap: parseFloat(stock.marketcap || 0),
+            ratio: parseFloat(stock.ratio || 1)
+        }));
+        
+        // Filter out invalid stocks
+        allStocks = allStocks.filter(stock => 
+            stock.ticker && 
+            stock.ticker.trim() !== '' && 
+            stock.price > 0
+        );
 
-            console.log(`After filtering, ${allStocks.length} stocks remain`);
+        console.log(`After filtering, ${allStocks.length} stocks remain`);
             
-            // Important: Make sure all form elements are reset to default values
-            document.getElementById('exchange').value = 'all';
-            document.getElementById('min-pe').value = '';
-            document.getElementById('max-pe').value = '';
-            document.getElementById('min-price').value = '';
-            document.getElementById('max-price').value = '';
-            document.getElementById('search').value = '';
-            
-            // Initialize filtered stocks with all stocks
-            filteredStocks = [...allStocks];
-            
-            // Reset to first page
-            currentPage = 1;
-
-            // Update stats
-            updateStats();
-            
-            // Display data
-            renderTable();
-            renderPagination();
-
+        // Important: Make sure all form elements are reset to default values
+        document.getElementById('exchange').value = 'all';
+        document.getElementById('min-pe').value = '';
+        document.getElementById('max-pe').value = '';
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+        document.getElementById('search').value = '';
+        
+        // Initialize filtered stocks with all stocks
+        filteredStocks = [...allStocks];
+        
+        // Update stats
+        updateStats();
+        
+        // Display data
+        renderTable();
+        renderPagination();
+        
         // Add a small delay before triggering the reset
         setTimeout(() => {
             // Programmatically click the reset filters button
             document.getElementById('reset-filters').click();
             console.log('Reset filters triggered after data load');
-        }, 5000); // 500ms delay
-
-        } catch (error) {
-            console.error('Error loading stock data:', error);
-            alert('Error loading stock data. Please try again later.');
-        } finally {
-            showLoading(false);
-        }
+        }, 500); // 500ms delay
+        
+    } catch (error) {
+        console.error('Error loading stock data:', error);
+        alert('Error loading stock data. Please try again later.');
+    } finally {
+        showLoading(false);
     }
+}
     
     // Render the stock table
     function renderTable() {

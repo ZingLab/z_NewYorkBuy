@@ -49,7 +49,7 @@
 
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Blue Chip Stock Screener</h1>
+            <h1 class="page-title">Public & Private Equity</h1>
             
             <div class="stats-cards">
                 <div class="stat-card">
@@ -70,77 +70,23 @@
                 </div>
             </div>
             
-            <div class="filters">
-                <div class="filter-title">
-                    <i class="fas fa-filter"></i>
-                    <h2>Filter Stocks</h2>
+            <div class="article">
+                <div class="article-title">
+                    <i class="fas fa-bookmark"></i>
+                    <h2>Where to put your first $10k</h2>
                 </div>
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="exchange">Exchange</label>
-                        <select id="exchange">
-                            <option value="all">All Exchanges</option>
-                            <option value="NYSE">NYSE</option>
-                            <option value="NASDAQ">NASDAQ</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="min-pe">Min P/E Ratio</label>
-                        <input type="number" id="min-pe" placeholder="Min P/E" min="0" step="0.1">
-                    </div>
-                    <div class="filter-group">
-                        <label for="max-pe">Max P/E Ratio</label>
-                        <input type="number" id="max-pe" placeholder="Max P/E" min="0" step="0.1">
+                <div class="article-row">
+                    <div class="article-group">
+                        <h3>Benefits of public equities</h3>
+                        <p></p>
+                        <h3>Benefits of private equities</h3>
+                        <p></p>
+                        <h3>Risks of public equities</h3>
+                        <p></p>
+                        <h3>Risks of private equities</h3>
+                        <p></p>
                     </div>
                 </div>
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="min-price">Min Price ($)</label>
-                        <input type="number" id="min-price" placeholder="Min Price" min="0" step="0.01">
-                    </div>
-                    <div class="filter-group">
-                        <label for="max-price">Max Price ($)</label>
-                        <input type="number" id="max-price" placeholder="Max Price" min="0" step="0.01">
-                    </div>
-                    <div class="filter-group">
-                        <label for="search">Search by Ticker/Name</label>
-                        <input type="text" id="search" placeholder="E.g., AAPL, Apple...">
-                    </div>
-                </div>
-                <div class="filter-buttons">
-                    <button class="btn-secondary" id="reset-filters">Reset Filters</button>
-                    <button class="btn-primary" id="apply-filters">Apply Filters</button>
-                </div>
-            </div>
-            
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Loading stock data...</p>
-            </div>
-
-            <div class="stocks-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-sort="exchange">Exchange <i class="fas fa-sort"></i></th>
-                            <th data-sort="ticker">Ticker <i class="fas fa-sort"></i></th>
-                            <th data-sort="name">Company Name <i class="fas fa-sort"></i></th>
-                            <th data-sort="price">Price ($) <i class="fas fa-sort"></i></th>
-                            <th data-sort="pe">P/E Ratio <i class="fas fa-sort"></i></th>
-                            <th data-sort="high52">52w High <i class="fas fa-sort"></i></th>
-                            <th data-sort="low52">52w Low <i class="fas fa-sort"></i></th>
-                            <th data-sort="marketcap">Market Cap <i class="fas fa-sort"></i></th>
-                            <th data-sort="ratio">Price/52w Low <i class="fas fa-sort"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody id="stocks-data">
-                        <!-- Stock data will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="pagination" id="pagination">
-                <!-- Pagination will be generated here -->
             </div>
 
             <div class="disclaimer">

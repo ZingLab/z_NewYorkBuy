@@ -28,6 +28,12 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.hidden {
+    display: none !important;
+}
+.disclaimer {
+    font-size: small;
+}
 .container {
     width: 90%;
     max-width: 1400px;

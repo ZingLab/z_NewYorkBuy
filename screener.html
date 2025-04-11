@@ -49,30 +49,104 @@
 
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Make Your Money Grow</h1>
+            <h1 class="page-title">Blue Chip Stock Screener</h1>
             
-            <div class="articles">
-                <div class="article-title">
-                    <i class="fas fa-bookmark"></i>
-                    <h2>Stocks vs Businesses</h2>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3 id="totalStocks">0</h3>
+                    <p>Total Stocks</p>
                 </div>
-                <div class="article-row">
-                    <div class="article-group">
-                        <h3>Benefits of public equities</h3>
-                        <p>Let's talk about why public equities should be on your radar when you're figuring out what to do with that first $10k. One of the biggest perks? Liquidity. You can buy and sell shares whenever the market's open, which gives you flexibility that's hard to beat. If you suddenly need cash or want to pivot your strategy, you can usually exit your position within... <a href="intro_public.html" class="read-more">Read More</a></p>
-                        <h3>Benefits of private equities</h3>
-                        <p>Now, private equities offer a completely different set of advantages. First off, there's the potential for outsized returns. When you get in early with a company that later goes public or gets acquired, the payoff can be substantial—we're talking multiples of your initial investment rather than just... <a href="intro_private.html" class="read-more">Read More</a></p>
-                        <h3>Risks of public equities</h3>
-                        <p>Of course, nothing comes without trade-offs. With public equities, volatility is the price of admission. Markets can swing wildly based on everything from economic data to geopolitical events to a poorly worded tweet from a CEO. That liquidity I mentioned earlier? It's a double-edged sword—it makes it easy to panic-sell during downturns, which is exactly when you should probably be... <a href="intro_public.html" class="read-more">Read More</a></p>
-                        <h3>Risks of private equities</h3>
-                        <p>Private equities come with their own substantial risks. Illiquidity tops the list—once you're in, you're typically locked in for years. There's no public market where you can sell your stake if you change your mind or need the cash. Your money is essentially tied up until there's an "exit event" like an acquisition or IPO, which might... <a href="intro_private.html" class="read-more">Read More</a></p>
-                        <a href="buy_a_business.html"><button class="internal-link">See Business Listings</button></a>
+                <div class="stat-card">
+                    <h3 id="avgPE">0.00</h3>
+                    <p>Average P/E Ratio</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="avgRatio">0.00%</h3>
+                    <p>Avg Price/52w Low Ratio</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalMarketCap">$0B</h3>
+                    <p>Total Market Cap</p>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-title">
+                    <i class="fas fa-filter"></i>
+                    <h2>Filter Stocks</h2>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="exchange">Exchange</label>
+                        <select id="exchange">
+                            <option value="all">All Exchanges</option>
+                            <option value="NYSE">NYSE</option>
+                            <option value="NASDAQ">NASDAQ</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="min-pe">Min P/E Ratio</label>
+                        <input type="number" id="min-pe" placeholder="Min P/E" min="0" step="0.1">
+                    </div>
+                    <div class="filter-group">
+                        <label for="max-pe">Max P/E Ratio</label>
+                        <input type="number" id="max-pe" placeholder="Max P/E" min="0" step="0.1">
                     </div>
                 </div>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="min-price">Min Price ($)</label>
+                        <input type="number" id="min-price" placeholder="Min Price" min="0" step="0.01">
+                    </div>
+                    <div class="filter-group">
+                        <label for="max-price">Max Price ($)</label>
+                        <input type="number" id="max-price" placeholder="Max Price" min="0" step="0.01">
+                    </div>
+                    <div class="filter-group">
+                        <label for="search">Search by Ticker/Name</label>
+                        <input type="text" id="search" placeholder="E.g., AAPL, Apple...">
+                    </div>
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn-secondary" id="reset-filters">Reset Filters</button>
+                    <button class="btn-primary" id="apply-filters">Apply Filters</button>
+                </div>
+            </div>
+            
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading stock data...</p>
+            </div>
+
+            <div class="stocks-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-sort="exchange">Exchange <i class="fas fa-sort"></i></th>
+                            <th data-sort="ticker">Ticker <i class="fas fa-sort"></i></th>
+                            <th data-sort="name">Company Name <i class="fas fa-sort"></i></th>
+                            <th data-sort="price">Price ($) <i class="fas fa-sort"></i></th>
+                            <th data-sort="pe">P/E Ratio <i class="fas fa-sort"></i></th>
+                            <th data-sort="high52">52w High <i class="fas fa-sort"></i></th>
+                            <th data-sort="low52">52w Low <i class="fas fa-sort"></i></th>
+                            <th data-sort="marketcap">Market Cap <i class="fas fa-sort"></i></th>
+                            <th data-sort="ratio">Price/52w Low <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-data">
+                        <!-- Stock data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated here -->
             </div>
 
             <div class="disclaimer">
                 <p>Disclaimer: </p>
+                <p>Data may be delayed or imprecise. This data is sourced from Google Finance, consolidated in Google Sheets, and passed directly here.</p>
+                <p>Full list was pulled from the $SCHK, excepting any positions which lacked Google Finance data.</p>
                 <p>This site does not provide financial advice, we are not financial advisors, you should always double check anything you find here. </p>
                 <p>This site is for entertainment purposes only.</p>
             </div>
@@ -132,8 +206,6 @@
 <!-- ----- ----- ----- ----- ----- -->
 <!-- ----- ----- ----- ----- ----- -->
 
-<script src="screener.js"></script>
-
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XW5398WNZQ"></script>
@@ -148,6 +220,8 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5058258078034240"
      crossorigin="anonymous"></script>
 <!-- END of Google tag (gtag.js) -->
+
+<script src="screener.js"></script>
 
 
 </body>
